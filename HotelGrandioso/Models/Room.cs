@@ -4,7 +4,14 @@ using System.Text;
 
 namespace HotelGrandioso.Models
 {
-    internal class Room
+    public  class Room
     {
+        public int Id { get; set; }
+        public int RoomNumber { get; set ; }
+        public int RoomTypeId { get; set; }
+        public int Floor { get; set; }
+        public decimal SizeM2 { get; set; }
+        public decimal PricePerNight { get; set; }
+
     }
 }
