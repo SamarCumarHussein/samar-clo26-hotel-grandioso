@@ -12,6 +12,7 @@ namespace HotelGrandioso.Models
         public int Floor { get; set; }
         public decimal SizeM2 { get; set; }
         public decimal PricePerNight { get; set; }
+        public List<Booking> Bookings { get; set; } = new();
 
     }
 }
