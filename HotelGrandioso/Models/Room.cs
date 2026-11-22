@@ -9,6 +9,7 @@ namespace HotelGrandioso.Models
         public int Id { get; set; }
         public int RoomNumber { get; set ; }
         public int RoomTypeId { get; set; }
+        public RoomType RoomType { get; set; } = null!;
         public int Floor { get; set; }
         public decimal SizeM2 { get; set; }
         public decimal PricePerNight { get; set; }
