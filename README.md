@@ -23,7 +23,44 @@ dotnet run --project HotelGrandioso
 
 ```mermaid
 classDiagram
-    %% Ersätt med ditt eget klassdiagram
+    class Room {
+        +int Id
+        +int RoomNumber
+        +int RoomTypeId
+        +RoomType RoomType
+        +List~Booking~ Bookings
+    }
+
+    class RoomType {
+        +int Id
+        +string Name
+        +decimal PricePerNight
+        +List~Room~ Rooms
+    }
+
+    class Guest {
+        +int Id
+        +string FirstName
+        +string LastName
+        +string Email
+        +List~Booking~ Bookings
+    }
+
+    class Booking {
+        +int Id
+        +int RoomId
+        +int GuestId
+        +DateTime CheckIn
+        +DateTime CheckOut
+        +Room Room
+        +Guest Guest
+    }
+
+    RoomType "1" --> "*" Room : har
+    Room "1" --> "*" Booking : bokas
+    Guest "1" --> "*" Booking : gör
+```
+
 ```
 
 ## GDPR
