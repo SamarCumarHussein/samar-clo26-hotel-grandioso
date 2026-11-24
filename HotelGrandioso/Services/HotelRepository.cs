@@ -40,7 +40,7 @@ namespace HotelGrandioso.Services
             _context.SaveChanges();
         }
 
-        // Ta bort en bokning samt kollar först om bokningen finns i databasen innan den tas bort
+        // Ta bort en bokning  kollar först om bokningen finns i databasen innan den tas bort
         public void RemoveBooking(Booking booking)
         {
             var bookingToRemove = _context.Bookings.FirstOrDefault(b => b.Id == booking.Id);

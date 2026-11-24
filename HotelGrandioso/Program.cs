@@ -1,9 +1,31 @@
-// Startpunkt för Hotel Grandioso.
-// Här kopplar du ihop databasen och menyn.
 
-// TODO: Skapa databasen med EF Core (se Data/README.md)
+using HotelGrandioso.Data;
+using HotelGrandioso.Services;
+using HotelGrandioso.UI;
+using Microsoft.EntityFrameworkCore;
 
-// TODO: Starta menyn (Boka rum, Avboka, Visa bokningar, Visa lediga rum, Avsluta)
+namespace HotelGrandioso
+{
+    public class Program
+    {
+        static void Main(string[] args)
+        {
+            // Ansluter till databasen.
+            using HotelContext context = new HotelContext();
 
-Console.WriteLine("=== Hotel Grandioso ===");
-Console.WriteLine("Projektet startar här. Ta bort den här raden när du börjat bygga.");
+            // Skapar databastabellerna med migrationer.
+            context.Database.Migrate();
+
+            // Lägger in rumstyper och rum.
+            Seed.SeedData(context);
+
+            // Skapar repository.
+            HotelRepository repository = new HotelRepository(context);
+
+            // Startar menyn.
+            HotelMenu menu = new HotelMenu(repository);
+            menu.Start();
+        }
+    }
+}
+
