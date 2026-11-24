@@ -3,6 +3,7 @@ using HotelGrandioso.Services;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HotelGrandioso.UI
 {
@@ -61,5 +62,74 @@ namespace HotelGrandioso.UI
             }
         }
 
-    
+        // Bokar ett rum.
+        private void BookRoom()
+        {
+            Console.Write("\nGästens namn: ");
+            string guestName = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(guestName))
+            {
+                Console.WriteLine("Ange gästens namn.");
+                return;
+            }
+
+            Console.Write("Incheckning (ÅÅÅÅ-MM-DD): ");
+
+            if (!DateTime.TryParse(Console.ReadLine(), out DateTime checkIn))
+            {
+                Console.WriteLine("Felaktigt datum.");
+                return;
+            }
+
+            Console.Write("Utcheckning (ÅÅÅÅ-MM-DD): ");
+
+            if (!DateTime.TryParse(Console.ReadLine(), out DateTime checkOut))
+            {
+                Console.WriteLine("Felaktigt datum.");
+                return;
+            }
+
+            if (checkOut <= checkIn)
+            {
+                Console.WriteLine("Felaktiga datum.");
+                return;
+            }
+
+            // Visar alla rum.
+            ShowRooms();
+
+            Console.Write("\nAnge rumsnummer: ");
+
+            if (!int.TryParse(Console.ReadLine(), out int roomNumber))
+            {
+                Console.WriteLine("Felaktigt rumsnummer.");
+                return;
+            }
+
+            // Hittar valt rum.
+            Room room = repository.GetRooms()
+                .FirstOrDefault(r => r.RoomNumber == roomNumber);
+
+            if (room == null)
+            {
+                Console.WriteLine("Rummet finns inte.");
+                return;
+            }
+
+            // Kontrollerar om rummet redan är bokat.
+            List<Booking> bookings = repository.GetBookings();
+
+            foreach (Booking oldBooking in bookings)
+            {
+                if (oldBooking.RoomId == room.Id &&
+                    checkIn < oldBooking.CheckOutDate &&
+                    checkOut > oldBooking.CheckInDate)
+                {
+                    Console.WriteLine("Rummet är redan bokat.");
+                    return;
+                }
+            }
+
+           Guest guest = new Guest
 
