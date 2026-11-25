@@ -1,5 +1,4 @@
-﻿
-using HotelGrandioso.Models;
+﻿using HotelGrandioso.Models;
 using HotelGrandioso.Services;
 using System;
 using System.Linq;
@@ -69,7 +68,7 @@ namespace HotelGrandioso.UI
             string guestName = Console.ReadLine();
 
             // Kontrollerar att gästens namn inte saknas.
-        if (guestName == null)
+            if (guestName == null)
             {
                 Console.WriteLine("Ange gästens namn.");
                 return;
@@ -198,4 +197,54 @@ namespace HotelGrandioso.UI
         {
             var bookings = repository.GetBookings();
 
-           
+            if (bookings.Count == 0)
+            {
+                Console.WriteLine("\nDet finns inga bokningar.");
+                return;
+            }
+
+            Console.WriteLine("\n=== BOKNINGAR ===");
+
+            foreach (Booking booking in bookings)
+            {
+                int nights = (booking.CheckOutDate - booking.CheckInDate).Days;
+                decimal price = repository.CalculateTotalPrice(booking);
+
+                Console.WriteLine("-------------------------");
+                Console.WriteLine($"Boknings-ID: {booking.Id}");
+                Console.WriteLine($"Gäst: {booking.Guest.Name}");
+                Console.WriteLine($"Rum: {booking.Room.RoomNumber}");
+                Console.WriteLine($"Incheckning: {booking.CheckInDate:yyyy-MM-dd}");
+                Console.WriteLine($"Utcheckning: {booking.CheckOutDate:yyyy-MM-dd}");
+                Console.WriteLine($"Antal nätter: {nights}");
+                Console.WriteLine($"Pris: {price} kr");
+            }
+        }
+
+        // Visar alla rum på hotellet.
+        private void ShowRooms()
+        {
+            var rooms = repository.GetRooms();
+
+            if (rooms.Count == 0)
+            {
+                Console.WriteLine("\nDet finns inga rum registrerade.");
+                return;
+            }
+
+            Console.WriteLine("\n=== HOTELLETS RUM ===");
+
+            foreach (Room room in rooms)
+            {
+                Console.WriteLine("-------------------------");
+                Console.WriteLine($"Rumsnummer: {room.RoomNumber}");
+                Console.WriteLine($"Våning: {room.Floor}");
+                Console.WriteLine($"Storlek: {room.SizeM2} m²");
+                Console.WriteLine($"Rumstyp: {room.RoomType.Name}");
+                Console.WriteLine($"Pris per natt: {room.PricePerNight} kr");
+            }
+        }
+
+    }
+}
+
