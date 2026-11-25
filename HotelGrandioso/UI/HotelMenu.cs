@@ -1,9 +1,9 @@
-﻿using HotelGrandioso.Models;
+﻿
+using HotelGrandioso.Models;
 using HotelGrandioso.Services;
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HotelGrandioso.UI
 {
@@ -68,7 +68,8 @@ namespace HotelGrandioso.UI
             Console.Write("\nGästens namn: ");
             string guestName = Console.ReadLine();
 
-            if (string.IsNullOrWhiteSpace(guestName))
+            // Kontrollerar att gästens namn inte saknas.
+        if (guestName == null)
             {
                 Console.WriteLine("Ange gästens namn.");
                 return;
@@ -131,5 +132,70 @@ namespace HotelGrandioso.UI
                 }
             }
 
-           Guest guest = new Guest
 
+            // Skapar gästen och bokningen.
+            Guest guest = new Guest
+            {
+                Name = guestName
+            };
+
+            Booking booking = new Booking
+            {
+                Guest = guest,
+                RoomId = room.Id,
+                CheckInDate = checkIn,
+                CheckOutDate = checkOut
+            };
+
+            repository.AddBooking(booking);
+
+            decimal totalPrice = repository.CalculateTotalPrice(booking);
+
+            int nights = (checkOut - checkIn).Days;
+
+            Console.WriteLine("\nBokningen är genomförd!");
+            Console.WriteLine($"Rum: {room.RoomNumber}");
+            Console.WriteLine($"Antal nätter: {nights}");
+            Console.WriteLine($"Totalt pris: {totalPrice} kr");
+        }
+
+        // Tar bort en befintlig bokning.
+        private void CancelBooking()
+        {
+            var bookings = repository.GetBookings();
+
+            if (!bookings.Any())
+            {
+                Console.WriteLine("Det finns inga bokningar.");
+                return;
+            }
+
+            ShowBookings();
+
+            Console.Write("\nAnge boknings-ID: ");
+
+            if (!int.TryParse(Console.ReadLine(), out int bookingId))
+            {
+                Console.WriteLine("Ogiltigt ID.");
+                return;
+            }
+
+            Booking booking = bookings.FirstOrDefault(b => b.Id == bookingId);
+
+            if (booking == null)
+            {
+                Console.WriteLine("Bokningen hittades inte.");
+                return;
+            }
+
+            repository.RemoveBooking(booking);
+
+            Console.WriteLine("Bokningen har avbokats.");
+        }
+
+        // Visar alla aktuella bokningar.
+        private void ShowBookings()
+        {
+            var bookings = repository.GetBookings();
+
+           
