@@ -62,8 +62,6 @@ classDiagram
     Guest "1" --> "*" Booking : gör
 ```
 
-```
-
 ## GDPR
 Det är viktigt att tänka på GDPR när gästernas personuppgifter hanteras. Därför samlas endast information in som behövs för att kunna hantera hotellbokningar.
 
