@@ -1,6 +1,6 @@
 # Hotel Grandioso — Inlämning 1
 
-**Namn:** [Samar Hussein]
+**Namn:** Samar Hussein
 
 ## Så kör du projektet
 
