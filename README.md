@@ -1,6 +1,6 @@
 # Hotel Grandioso — Inlämning 1
 
-**Namn:** [ditt namn]
+**Namn:** [Samar Hussein]
 
 ## Så kör du projektet
 
@@ -16,8 +16,8 @@ dotnet run --project HotelGrandioso
 
 ## Databas
 
-- Databas: [SQLite eller LocalDB]
-- Migrationer: [hur du skapar och kör dem]
+- Databas: SQLite
+- Migrationer: Migrationerna finns i mappen Migrations och körs automatiskt när programmet startar.
 
 ## UML-klassdiagram
 
@@ -64,14 +64,18 @@ classDiagram
 ```
 
 ## GDPR
+Det är viktigt att tänka på GDPR när gästernas personuppgifter hanteras. Därför samlas endast information in som behövs för att kunna hantera hotellbokningar.
 
-Utvärdera fälten i `Guest` ett i taget. Vad bygger du in, och varför?
+Gästens namn sparas för att kunna se vem bokningen tillhör. Däremot samlas inte onödig information in, till exempel Religion, HairColor eller HeightCM, eftersom dessa uppgifter inte har någon betydelse för hotellbokningen. Religion är dessutom en känslig personuppgift som kräver extra skydd. På så sätt följs principen om dataminimering och vi ser till att inte spara mer information om gästerna än vad som faktiskt behövs.
 
 >
 
 ## Designmönster
+Jag använder Repository mönster genom klassen HotelRepository. Där finns metoderna GetRooms(), GetBookings(), AddBooking(),RemoveBooking() och CalculateTotalPrice() för att hantera information i databasen.
 
-Beskriv det designmönster du använt (till exempel Repository), vad det gör och varför du valde det.
+I Program.cs skapas först databaskopplingen och sedan skickas den vidare till HotelRepository. Därefter skickas repository vidare till HotelMenu, som använder metoderna för att hantera användarens val.
+
+Jag valde detta sätt för att dela upp koden och göra programmet enklare att förstå och ändra.
 
 >
 
