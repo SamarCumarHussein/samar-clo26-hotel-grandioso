@@ -28,13 +28,16 @@ classDiagram
         +int RoomNumber
         +int RoomTypeId
         +RoomType RoomType
+        +int Floor
+        +decimal SizeM2 
+        +decimal PricePerNight 
         +List~Booking~ Bookings
     }
 
     class RoomType {
         +int Id
         +string Name
-        +decimal PricePerNight
+        +string Description
         +List~Room~ Rooms
     }
 
@@ -46,12 +49,12 @@ classDiagram
 
     class Booking {
         +int Id
-        +int RoomId
         +int GuestId
+        +Guest Guest
         +DateTime CheckIn
         +DateTime CheckOut
+        +int RoomId
         +Room Room
-        +Guest Guest
     }
 
     RoomType "1" --> "*" Room : har
